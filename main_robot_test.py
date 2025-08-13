@@ -156,7 +156,7 @@ if __name__ == '__main__':
     line_type = cv2.LINE_AA
 
     # Camera init
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print('Error in opening Camera for real-feed')
         exit()
