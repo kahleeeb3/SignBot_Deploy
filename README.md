@@ -1,5 +1,4 @@
-# SignBot_Deploy
-
+﻿# SignBot_Deploy
 SignBot_Deploy is a real-time gesture recognition system that processes webcam input and makes directional predictions using deep learning models (including COSMOS). This README will guide you through setting up the environment, downloading pretrained models, and running the demo.
 
 ---
@@ -8,7 +7,7 @@ SignBot_Deploy is a real-time gesture recognition system that processes webcam i
 
 ### Prerequisites
 
-- **Conda** (Anaconda or Miniconda)
+- **Python 3.12.10**
 - **Git**
 - (Optional) NVIDIA GPU + CUDA drivers for GPU acceleration
 
@@ -17,62 +16,47 @@ SignBot_Deploy is a real-time gesture recognition system that processes webcam i
 ## 📦 Installation
 
 ### 1. Clone the Repository
-
 ```
 git clone https://github.com/tonoypodder/SignBot_Deploy.git
 cd SignBot_Deploy
 ```
 
-### 2. 🐍 Create the Conda Environment
-Make sure you have Conda installed.
+### 2. Create a Virtual Environment
 ```
-conda env create -f environment.yml
-conda activate SignBot_Deploy
-```
-
-### 3. Upgrade Pip & Install Python Packages
-```
+python -m venv venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\venv\Scripts\Activate
 python -m pip install --upgrade pip
-pip install gdown opencv-python mediapipe natsort
 ```
 
-### 4. Install GPU-Compatible PyTorch
+### 3. Download & Extract Model Files
 ```
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install gdown
+gdown --fuzzy https://drive.google.com/file/d/1AeiNM1UlNlTfl5gWVhonYw2yPyUcfnvs/view?usp=sharing -O modules/signbot_demo.zip
+python -m zipfile -e modules/signbot_demo.zip modules
 ```
-
-### 5. Install PyTorch Lightning
+### 4. Setup COSMOS Tokenizer
 ```
-conda install lightning -c conda-forge
-```
-
-### 6. Download & Extract Model Files
-Download the pretrained models ZIP:
-```
-gdown --fuzzy https://drive.google.com/file/d/1AeiNM1UlNlTfl5gWVhonYw2yPyUcfnvs/view?usp=sharing
-```
-Extract the archive:
-```
-python -m zipfile -e signbot_demo.zip ./
-```
-
-### 7. Setup COSMOS Tokenizer
-```
-cd Cosmos-Tokenizer
+cd modules/Cosmos-Tokenizer
 pip install -r requirements.txt
 pip install -e .
-cd ..
+cd ../..
 ```
+
+## 5. Things that need fixed
+```python
+# modules\pose_hand_landmark_code\MediapipeLandmarks.py line 8
+import modules.pose_hand_landmark_code.drawing_styles as dr_styles
+```
+
+### 6. Install Python Packages
+```
+pip install -r requirements.txt
+```
+
 
 ## ▶️ Usage
 After installation, run the main demo script:
 ```
 python main_robot_test.py
 ```
-
-## 📝 Notes
-If you encounter operator torchvision::nms does not exist, ensure torch and torchvision are installed from the same source and are version-compatible.
-
-The GPU-enabled PyTorch build will fall back to CPU if no GPU is available.
-
-Python 3.8+ is required (3.10 recommended).
