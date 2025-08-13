@@ -60,3 +60,11 @@ After installation, run the main demo script:
 ```
 python main_robot_test.py
 ```
+git config --unset user.name
+git config --unset user.email
+git config user.name "kahleeeb3"
+git config user.email "powellcalebm@gmail.com"
+git add --all
+git commit -m "git instructions"
+git push
+```
