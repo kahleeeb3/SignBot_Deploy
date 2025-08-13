@@ -140,7 +140,7 @@ if __name__ == '__main__':
     # Initialize components
     processor = ImageProcessing()
     model_pred = ModelPrediction(model_path=os.path.join(
-        ".", "pretrained_ckpts", "ResCNNMAE_air_FT_mask_ratio_0", "fold_2", "best_epoch.ckpt"))
+        ".", "modules", "pretrained_ckpts", "ResCNNMAE_air_FT_mask_ratio_0", "fold_2", "best_epoch.ckpt"))
     # cosmos_model = CosmosModelPrediction(model_path=os.path.join(
     #     ".", "pretrained_ckpts", "Cosmos_V2_own_6class_natops", "fold_1",  "best_epoch.ckpt"))
     # cosmos_embedding = CosmosEmbedding()
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     line_type = cv2.LINE_AA
 
     # Camera init
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print('Error in opening Camera for real-feed')
         exit()

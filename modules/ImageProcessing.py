@@ -15,12 +15,12 @@ class ImageProcessing:
         """
         Loads the hand and pose detection models with preset configurations.
         """
-        self.hand_model = HandDetectionModel(model_asset_path = os.path.join(".", "pose_hand_landmark_code", "hand_landmarker.task"),
+        self.hand_model = HandDetectionModel(model_asset_path = os.path.join(".", "modules", "pose_hand_landmark_code", "hand_landmarker.task"),
                                            
                                 min_hand_detection_confidence= 0.5,
                                 min_hand_presence_confidence= 0.5)
 
-        self.pose_model = PoseDetectionModel(model_asset_path = os.path.join(".", "pose_hand_landmark_code", "pose_landmarker_heavy.task"),
+        self.pose_model = PoseDetectionModel(model_asset_path = os.path.join(".", "modules", "pose_hand_landmark_code", "pose_landmarker_heavy.task"),
                                             
                                 min_pose_detection_confidence=0.5,
                                 min_pose_presence_confidence=0.5,

@@ -198,16 +198,16 @@ def get_pretrained_encdec(model_name, model_path):
 
     if model_name == 'CNNMAE':
         "This model is trained in Masked AutoEncoder Technique. The encoder size is nearly double than decoder size. Loss was calculated as masked patch loss."
-        from cnn_mae import CNNMAE
+        from modules.cnn_mae import CNNMAE
         yaml_path = os.path.join(model_path, "hparams.yaml")
         if not os.path.exists(yaml_path):
 
-            yaml_path = os.path.join(".", 'CNNMAE_pre_trained_model_path',model_path.split(os.sep)[-1],'hparams.yaml')
+            yaml_path = os.path.join(".", "modules", 'CNNMAE_pre_trained_model_path',model_path.split(os.sep)[-1],'hparams.yaml')
         with open(yaml_path, 'r') as file:
             hparams = yaml.safe_load(file)
         check_path = os.path.join(model_path, "best_epoch.ckpt")
         if not os.path.exists(check_path):
-            check_path = os.path.join(".", "CNNMAE_pre_trained_model_path",model_path.split(os.sep)[-1], "best_epoch.ckpt")
+            check_path = os.path.join(".", "modules", "CNNMAE_pre_trained_model_path",model_path.split(os.sep)[-1], "best_epoch.ckpt")
             # print(check_path)
         model = CNNMAE.load_from_checkpoint(check_path, **hparams)
         model.mask_ratio = 0
