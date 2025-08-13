@@ -66,5 +66,7 @@ git config user.name "kahleeeb3"
 git config user.email "powellcalebm@gmail.com"
 git add --all
 git commit -m "git instructions"
-git push
+git -c credential.helper= push
+git config --unset user.name
+git config --unset user.email
 ```
