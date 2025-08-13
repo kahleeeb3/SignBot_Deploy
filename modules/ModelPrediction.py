@@ -86,7 +86,7 @@ class ModelPrediction:
         Returns:
             ndarray: Boolean array indicating which classes are selected.
         """
-        with open(os.path.join(".", "cal_qhat", "alpha_0.05.npy"), 'rb') as file_:
+        with open(os.path.join(".", "modules", "cal_qhat", "alpha_0.05.npy"), 'rb') as file_:
             qhat = np.load(file_)
 
         # Create prediction set using (1 - q̂) threshold
