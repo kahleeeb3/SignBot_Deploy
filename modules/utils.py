@@ -1,5 +1,5 @@
-from libraries import *
-from cnn_mae import *   
+from modules.libraries import *
+from modules.cnn_mae import *   
 import random 
 import natsort
 

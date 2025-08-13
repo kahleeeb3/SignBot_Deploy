@@ -1,6 +1,6 @@
-from libraries import *
-from cnn_mae import *
-from utils import *
+from modules.libraries import *
+from modules.cnn_mae import *
+from modules.utils import *
 import torchmetrics
 
 class VideoClassificationModel(pl.LightningModule): # Model 1

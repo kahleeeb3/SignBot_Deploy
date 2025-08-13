@@ -30,4 +30,4 @@ from cosmos_tokenizer.utils import (
 )
 from cosmos_tokenizer.video_lib import CausalVideoTokenizer
 import numpy as np
-from pose_hand_landmark_code.MediapipeLandmarks import HandDetectionModel, PoseDetectionModel
+from modules.pose_hand_landmark_code.MediapipeLandmarks import HandDetectionModel, PoseDetectionModel

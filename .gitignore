@@ -1,0 +1,11 @@
+﻿/venv
+/__pycache__
+/.vscode
+/modules/*
+!/modules/ImageProcessing.py
+!/modules/ModelPrediction.py
+!/modules/CosMosEncoding.py
+!/modules/libraries.py
+!/modules/cnn_mae.py
+!/modules/models.py
+!/modules/utils.py

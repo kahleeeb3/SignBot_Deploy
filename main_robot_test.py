@@ -1,10 +1,10 @@
 # from env_1 import *
 import cv2
-from libraries import *
-from pose_hand_landmark_code.MediapipeLandmarks import HandDetectionModel, PoseDetectionModel
-from ImageProcessing import *
-from ModelPrediction import *
-# from CosMosEncoding import *
+from modules.libraries import *
+from modules.pose_hand_landmark_code.MediapipeLandmarks import HandDetectionModel, PoseDetectionModel
+from modules.ImageProcessing import *
+from modules.ModelPrediction import *
+# from modules.CosMosEncoding import *
 import time
 
 
