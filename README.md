@@ -1,5 +1,5 @@
 ﻿# SignBot_Deploy
-SignBot_Deploy is a real-time gesture recognition system that processes webcam input and makes directional predictions using deep learning models (including COSMOS). This README will guide you through setting up the environment, downloading pretrained models, and running the demo.
+SignBot_Deploy is a real-time gesture recognition system that processes webcam input and makes directional predictions using deep learning models (including COSMOS). This README will guide you through setting up the environment, downloading pre-trained models, and running the demo.
 
 ---
 
@@ -17,7 +17,7 @@ SignBot_Deploy is a real-time gesture recognition system that processes webcam i
 
 ### 1. Clone the Repository
 ```
-git clone https://github.com/tonoypodder/SignBot_Deploy.git
+git clone https://github.com/kahleeeb3/SignBot_Deploy.git
 cd SignBot_Deploy
 ```
 
@@ -30,10 +30,11 @@ python -m pip install --upgrade pip
 ```
 
 ### 3. Download & Extract Model Files
-```
+```ps
 pip install gdown
 gdown --fuzzy https://drive.google.com/file/d/1AeiNM1UlNlTfl5gWVhonYw2yPyUcfnvs/view?usp=sharing -O modules/signbot_demo.zip
 python -m zipfile -e modules/signbot_demo.zip modules
+del modules/signbot_demo.zip
 ```
 ### 4. Setup COSMOS Tokenizer
 ```
@@ -50,8 +51,12 @@ import modules.pose_hand_landmark_code.drawing_styles as dr_styles
 ```
 
 ### 6. Install Python Packages
-```
+```bash
+pip cache purge
 pip install -r requirements.txt
+
+# Check that CUDA is available
+python -c "import torch; print(torch.cuda.is_available())"
 ```
 
 ## ▶️ Usage
