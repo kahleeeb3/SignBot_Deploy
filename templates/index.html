@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Server-Driven Display</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Waiting for server updates...</h1>
+
+  <script>
+    // This is the JavaScript that listens for server-sent events
+    const eventSource = new EventSource('/stream');
+
+    eventSource.onmessage = function (event) {
+      const data = JSON.parse(event.data);
+      document.querySelector('h1').textContent = data.message;
+      console.log("Received new message:", data.message);
+    };
+
+    eventSource.onerror = function (error) {
+      console.error("EventSource failed:", error);
+      eventSource.close();
+    };
+  </script>
+</body>
+
+</html>
