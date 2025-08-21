@@ -36,6 +36,7 @@ gdown --fuzzy https://drive.google.com/file/d/1AeiNM1UlNlTfl5gWVhonYw2yPyUcfnvs/
 python -m zipfile -e modules/signbot_demo.zip modules
 del modules/signbot_demo.zip
 ```
+
 ### 4. Setup COSMOS Tokenizer
 ```
 cd modules/Cosmos-Tokenizer
@@ -44,7 +45,7 @@ pip install -e .
 cd ../..
 ```
 
-## 5. Things that need fixed
+### 5. Things that need fixed
 ```python
 # modules\pose_hand_landmark_code\MediapipeLandmarks.py line 8
 import modules.pose_hand_landmark_code.drawing_styles as dr_styles
