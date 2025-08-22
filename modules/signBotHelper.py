@@ -1,10 +1,92 @@
+import cv2
+class FrameCapture:
+    def __init__(self, camera_index=0, frame_size=(640, 480)):
+        self.camera_index = camera_index
+        self.frame_size = frame_size
+        self.cap = None
+        self.frame = None
+    
+    def open(self):
+        self.cap = cv2.VideoCapture(self.camera_index)
+        if not self.cap.isOpened():
+            raise RuntimeError("Error: could not open camera.")
+        
+    def capture(self):
+        # Capture and store a single frame (resized).
+        if self.cap is None:
+            raise RuntimeError("Camera not initialized. Call open() first.")
+
+        success, frame = self.cap.read()
+        if not success:
+            self.frame = None
+        if self.frame_size:
+            self.frame = cv2.resize(frame, self.frame_size)
+    
+    def release(self):
+        if self.cap is not None:
+            self.cap.release()
+            self.cap = None
+
+    def __enter__(self):
+        self.open()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.release()
+        cv2.destroyAllWindows()
+"""
+# Example Usage:
+camera = FrameCapture()
+camera.open()
+
+while True:
+    camera.capture()
+    if camera.frame is None:
+        break
+    
+    cv2.imshow("frame", camera.frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+camera.release()
+cv2.destroyAllWindows()
+"""
+
+import numpy as np
+class ClipBuffer:
+    def __init__(self, size=(224, 224)):
+        self.size = size
+        self.raw, self.land = [], []
+
+    def add(self, frame, annotated):
+        self.raw.append(cv2.resize(frame, self.size).astype(np.uint8))
+        self.land.append(cv2.resize(annotated, self.size).astype(np.uint8))
+
+    def finalize(self):
+        if not self.raw or not self.land:
+            return None, None
+        raw_np = np.stack(self.raw)
+        land_np = np.stack(self.land)
+        self.raw.clear()
+        self.land.clear()
+        return raw_np, land_np
+"""
+# Example Usage:
+clip = ClipBuffer()
+clip.add(frame, processor.annotated_image)
+
+raw_np, land_np = clip.finalize()
+if raw_np is not None:
+    direction = model_pred.prediction(raw_np, land_np)
+"""
+
 from flask import Flask, render_template, Response, after_this_request
 from typing import Optional, Dict
 import threading
 import cv2
 from werkzeug.serving import make_server
 import socket
-
 
 class _Channel:
     def __init__(self):
@@ -19,7 +101,7 @@ class WebServer:
         self.host = host
         self.port = port
         self.jpeg_quality = int(jpeg_quality)
-        self.app = Flask(__name__)
+        self.app = Flask(__name__, template_folder='./server/', static_folder='./server/')
 
         # channels (Video0, Video1)
         self._channels: Dict[str, _Channel] = {
