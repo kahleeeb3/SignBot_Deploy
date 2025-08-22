@@ -1,6 +1,7 @@
 import cv2, time
 from modules.ImageProcessing import *
 from modules.ModelPrediction import *
+from server import WebServer
 
 class FrameCapture:
     def __init__(self, camera_index=0, frame_size=(640, 480)):
@@ -39,20 +40,20 @@ class FrameCapture:
         cv2.destroyAllWindows()
 """
 # basic usage
-fc = FrameCapture()
-fc.open()
+camera = FrameCapture()
+camera.open()
 
 while True:
-    frame = fc.read()
-    if frame is None:
+    camera.capture()
+    if camera.frame is None:
         break
-
-    cv2.imshow("frame", frame)
+    
+    cv2.imshow("frame", camera.frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-fc.release()
+camera.release()
 cv2.destroyAllWindows()
 """
 
@@ -85,8 +86,9 @@ if raw_np is not None:
 if __name__ == '__main__':
     
     # object defines
+    server = WebServer(port=8765, jpeg_quality=80)
     clip = ClipBuffer()
-    camera = FrameCapture(0)
+    camera = FrameCapture()
     processor = ImageProcessing()
     model_path = "./modules/pretrained_ckpts/ResCNNMAE_air_FT_mask_ratio_0/fold_2/best_epoch.ckpt"
     model_pred = ModelPrediction(model_path)
@@ -98,13 +100,14 @@ if __name__ == '__main__':
 
     # run the main loop
     camera.open()
+    server.start()
 
     while True:
 
         # warn about data acquisition
         if acquiring_data:
-            print(f'Be ready for the gesture number: {gesture_counter + 1}')
-            print('Data acquisition will be started in 3 seconds')
+            # server.showText(f'Be ready for the gesture number: {gesture_counter + 1}')
+            # server.showText('Data acquisition will be started in 3 seconds')
             time.sleep(3)
             start_time, end_time = 0, 0
             acquiring_data = False
@@ -113,7 +116,7 @@ if __name__ == '__main__':
         camera.capture()
         if camera.frame is None:
             break
-        cv2.imshow("frame", camera.frame)
+        server.stream(camera.frame, "video0")
 
         # process frame
         processor.get_annotated_image(camera.frame) # process frame
@@ -123,17 +126,17 @@ if __name__ == '__main__':
 
         # decide state     
         if state == (True, True):
-            print("Video Recording Just Started")
-            cv2.imshow('landmark', processor.annotated_image)
+            server.showText("Video Recording Just Started")
+            server.stream(processor.annotated_image, "video1")
             clip.add(camera.frame, processor.annotated_image)
             frame_count += 1
             start_time = time.time()
         elif state == (True, False):
-            # print("No Data Acquisition")
+            # server.showText("No Data Acquisition")
             pass
         elif state == (False, True):
-            # print("Video Recording Going On")
-            cv2.imshow('landmark', processor.annotated_image)
+            server.showText("Video Recording Going On")
+            server.stream(processor.annotated_image, "video1")
             clip.add(camera.frame, processor.annotated_image)
             frame_count += 1
             end_time = time.time()
@@ -141,11 +144,11 @@ if __name__ == '__main__':
             elapsed_time = end_time - start_time
             if elapsed_time < 3:
                 continue
-            print("Video Recording Just Stopped'")
+            server.showText("Video Recording Just Stopped'")
             raw_np, land_np = clip.finalize()
             if raw_np is not None:
                 direction = model_pred.prediction(raw_np, land_np)
-                print(f"######### Model 1 Prediction: {direction} #########")
+                server.showText(f"Prediction: {direction}")
             frame_count = 0
             acquiring_data = True
             gesture_counter += 1        
