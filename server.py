@@ -27,6 +27,11 @@ class WebServer:
             "video1": _Channel(),
         }
 
+        # Text handling
+        self._text = ""
+        self._text_version = 0
+        self._text_cv = threading.Condition()
+
         @self.app.route("/")
         def index():
             return render_template("index.html")
@@ -56,6 +61,34 @@ class WebServer:
         # store server and thread
         self._server = None
         self._server_thread: Optional[threading.Thread] = None
+
+        @self.app.route("/text_stream")
+        def text_stream():
+            @after_this_request
+            def _no_cache(resp):
+                resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                resp.headers["Pragma"] = "no-cache"
+                resp.headers["Expires"] = "0"
+                return resp
+
+            def gen():
+                last = -1
+                while True:
+                    # wait until text changes or send a keepalive every 15s
+                    with self._text_cv:
+                        changed = self._text_cv.wait_for(
+                            lambda: self._text_version != last, timeout=15.0
+                        )
+                        if changed:
+                            body = self._text
+                            last = self._text_version
+                            # SSE "message" (one per change)
+                            yield f"data: {body}\n\n"
+                        else:
+                            # keep the connection alive (comment frame)
+                            yield ": keep-alive\n\n"
+
+            return Response(gen(), mimetype="text/event-stream")
     
     def start(self):
         # this just starts the server as a thread
@@ -107,3 +140,10 @@ class WebServer:
                    b"Content-Type: image/jpeg\r\n"
                    b"Content-Length: " + str(len(jpg)).encode() + b"\r\n\r\n" +
                    jpg + b"\r\n")
+    
+    def showText(self, html: str):
+        # Update text display
+        with self._text_cv:
+            self._text = html
+            self._text_version += 1
+            self._text_cv.notify_all()
