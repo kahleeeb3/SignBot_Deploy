@@ -1,0 +1,43 @@
+body {
+    background-color: black;
+    /* Body fill the viewport */
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+
+    /* Center Contents */
+    display:flex; 
+    justify-content:center; 
+    align-items: center;
+}
+body > div.grid {
+    background-color: grey;
+
+    /* grid system */
+    display:inline-grid; /* shrink to size needed */
+    grid-template-columns: max-content max-content; /* 2 columns */
+    grid-template-rows: auto; /* 2 rows, first 25% height */
+    
+    /* spacing */
+    gap:8px;
+    padding:8px;
+}
+
+.msg{
+    grid-column:1 / -1; /* span two columns */
+
+    /* center align */
+    display:flex; 
+    align-items:center; 
+    justify-content:center;
+    text-align:center; 
+    font: clamp(16px,3vw,32px) system-ui;
+}
+
+.cam > img{
+    /*Default size for no camera data*/
+    min-width: 640px;
+    min-height: 480px;
+}

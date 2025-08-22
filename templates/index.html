@@ -1,15 +1,30 @@
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+<html lang="en">
+<head>  
   <title>SignBot Server</title>
+  <meta http-equiv="Cache-Control" content="no-cache"> <!-- disable browser cache -->
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='myStyle.css') }}">
 </head>
 
 <body>
-  <div>
-    <h3>Camera 0</h3>
-    <img src="/video0">
+  <div class="grid">
+    <div class="cam">
+      <h1>Camera0</h1>
+      <img src="/video0" alt="Camera 1"/>
+    </div>
+    <div class="cam">
+      <h1>Camera1</h1>
+      <img src="/video1" alt="Camera 1"/>
+    </div>
+    <div class="msg" id="msg">Welcome to SignBot!</div>
   </div>
-  <div>
-    <h3>Camera 1</h3>
-    <img src="/video1">
-  </div>
+
+  <script>
+    const el = document.getElementById('msg');
+    const es = new EventSource('/text_stream');
+    es.onmessage = (e) => {
+      el.innerHTML = e.data;
+    };
+  </script>
 </body>
