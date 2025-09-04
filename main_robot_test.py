@@ -3,7 +3,7 @@ from modules.ImageProcessing import *
 from modules.ModelPrediction import *
 from modules.signBotHelper import WebServer, ClipBuffer, FrameCapture
 import time
-    
+
 # object defines
 server = WebServer(port=8765, jpeg_quality=80)
 clip = ClipBuffer()

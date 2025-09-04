@@ -1,9 +1,14 @@
-﻿--extra-index-url https://download.pytorch.org/whl/cu121
+﻿--extra-index-url https://download.pytorch.org/whl/cu118
+mediapipe
 flask
 opencv-python
 lightning
-mediapipe
 natsort
-torch==2.5.1+cu121
-torchvision==0.20.1+cu121
-torchaudio==2.5.1+cu121
+einops
+
+# pytorch 2.0.0 dependencies:
+# https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-pytorch
+# https://pytorch.org/get-started/previous-versions/
+torch==2.0.0
+torchvision==0.15.0
+torchaudio==2.0.0

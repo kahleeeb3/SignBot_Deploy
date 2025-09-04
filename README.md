@@ -37,13 +37,13 @@ python -m zipfile -e modules/signbot_demo.zip modules
 del modules/signbot_demo.zip
 ```
 
-### 4. Setup COSMOS Tokenizer
-```
+<!-- ### 4. Setup COSMOS Tokenizer
+```bash
 cd modules/Cosmos-Tokenizer
 pip install -r requirements.txt
 pip install -e .
 cd ../..
-```
+``` -->
 
 ### 5. Things that need fixed
 ```python
