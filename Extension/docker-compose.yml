@@ -1,0 +1,32 @@
+services:
+  app:
+    image: "signbot_image:latest"
+    network_mode: "bridge"
+    ports:
+      # Map allowed port 21000 to Foxglove's internal port 8765
+      - "21000:8765"
+    devices:
+      # Give the container access to the USB camera
+      - "/dev/video0:/dev/video0"
+      - "/dev/video1:/dev/video1"
+      - "/dev/video2:/dev/video2"
+      - "/dev/video3:/dev/video3"
+      - "/dev/video4:/dev/video4" # RGB capture?
+      - "/dev/video5:/dev/video5"
+      - "/dev/bus/usb:/dev/bus/usb"   # helpful for RealSense/USB control
+    group_add:
+      # Make sure the container can talk to v4l2 devices (USB Camera)
+      - "video"
+    device_cgroup_rules:
+      # Allow all /dev/video* character devices (USB Camera)
+      - "c 81:* rmw"
+    environment:
+      # For Jetson/L4T containers (not sure if you need this tbh)
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      # To access Spot credentials for authentication
+      - "/opt/payload_credentials/payload_guid_and_secret:/payload_guid_and_secret"
+    restart: unless-stopped
+    # command: >
+      # bash -c "source /ros_ws/install/setup.bash && ros2 launch your_package your_launch_file.launch.py"

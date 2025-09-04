@@ -1,0 +1,25 @@
+# Use a base image provided by nvidia that already contains tensorflow 2.5
+FROM nvcr.io/nvidia/l4t-pytorch:r35.2.1-pth2.0-py3
+
+# Set noninteractive mode for APT
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    nano \
+    v4l-utils \
+    python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Flask (and make sure pip is fresh)
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir mediapipe && \
+    pip3 install --no-cache-dir flask && \
+    pip3 install --no-cache-dir lightning && \
+    pip3 install --no-cache-dir natsort && \
+    pip3 install --no-cache-dir einops
+
+# App folder
+WORKDIR /app
+COPY . .

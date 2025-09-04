@@ -16,21 +16,22 @@ SignBot_Deploy is a real-time gesture recognition system that processes webcam i
 ## 📦 Installation
 
 ### 1. Clone the Repository
-```
+```bash
 git clone https://github.com/kahleeeb3/SignBot_Deploy.git
 cd SignBot_Deploy
 ```
 
 ### 2. Create a Virtual Environment
-```
-python -m venv venv
+```bash
+py --list
+py -3.8 -m venv venv
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\venv\Scripts\Activate
 python -m pip install --upgrade pip
 ```
 
 ### 3. Download & Extract Model Files
-```ps
+```bash
 pip install gdown
 gdown --fuzzy https://drive.google.com/file/d/1AeiNM1UlNlTfl5gWVhonYw2yPyUcfnvs/view?usp=sharing -O modules/signbot_demo.zip
 python -m zipfile -e modules/signbot_demo.zip modules
@@ -62,6 +63,18 @@ python -c "import torch; print(torch.cuda.is_available())"
 
 ## ▶️ Usage
 After installation, run the main demo script:
-```
+```bash
 python main_robot_test.py
+```
+
+## Docker
+```bash
+wsl -d Ubuntu
+sudo docker build -t signbot_image --platform linux/arm64 -f Extension/Dockerfile.l4t .
+```
+```bash
+sudo docker image inspect signbot_image --format '{{.Os}}/{{.Architecture}}'
+```
+```bash
+sudo docker save signbot_image | pigz > Extension/signbot.tgz
 ```

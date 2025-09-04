@@ -1,0 +1,9 @@
+{
+  "extension_name": "signbot_extension",
+  "description": "SignBot Extension",
+  "version": "1.0.0",
+  "images": ["signbot.tgz"],
+  "installation_target": "spot",
+  "files_to_save": ["docker-compose.yml", "manifest.json"],
+  "directories_to_save": []
+}
